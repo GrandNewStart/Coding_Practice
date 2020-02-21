@@ -1,22 +1,8 @@
 #include <iostream>
-
-using pii = std::pair<int, int>;
+#include <algorithm>
 
 int sequence[1001];
-pii dp[1001];
-
-pii SQ(int n) {
-	if (dp[n].first == 0) {
-		if (SQ(n - 1).second < sequence[n]) {
-			dp[n] = pii(SQ(n - 1).first + 1, sequence[n]);
-		}
-		else {
-			dp[n] = SQ(n - 1);
-		}
-	}
-
-	return dp[n];
-}
+int dp[1001];
 
 int main() {
 	std::cin.tie(NULL);
@@ -27,9 +13,23 @@ int main() {
 
 	for (int i = 1; i <= n; i++) {
 		std::cin >> sequence[i];
+		dp[i] = 1;
 	}
 
-	dp[1] = pii(1, sequence[1]);
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= i; j++) {
+			if (sequence[i] > sequence[j]) {
+				dp[i] = std::max(dp[i], dp[j] + 1);
+			}
+		}
+	}
 
-	std::cout << SQ(n).first;
+	int max = 0;
+	for (int i = 0; i <= n; i++) {
+		if (dp[i] > max) {
+			max = dp[i];
+		}
+	}
+
+	std::cout << max;
 }
