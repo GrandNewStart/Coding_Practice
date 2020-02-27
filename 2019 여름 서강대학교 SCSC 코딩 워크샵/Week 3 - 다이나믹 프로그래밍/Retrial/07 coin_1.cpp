@@ -13,15 +13,15 @@ int main() {
 	std::cin >> coins >> target;
 
 	memset(dp, 0, sizeof(dp));
+	dp[0] = 1;
 
 	for (int i = 1; i <= coins; i++) {
 		std::cin >> coin[i];
-		dp[coin[i]] = 1;
 	}
 
 	for (int i = 1; i <= coins; i++) {
 		int t = coin[i];
-		for (int j = 1; j <= target; j++) {
+		for (int j = t; j <= target; j++) {
 			dp[j] += dp[j - t];
 		}
 	}
